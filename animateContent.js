@@ -15,51 +15,96 @@
 	  $.fn.animateContent=function(options)
 		{                 //On définit nos paramètres par défaut
            var defauts=
-           {        'speed': 5000,       //Intervalle entre chaque image, en millisecondes
-					'effect': '300px',       //effet utiliser   
+           {        'speed': 2000,		   //Intervalle entre chaque image, en millisecondes
+					'gap':-150,  
+					'effect': 'meltedTranslation',       //effet utiliser  ( en travaux) 
 					'callback': null        //Fonction appelée à chaque nouvelle image
 		   };  
 		   
-		    var parametres=$.extend(defauts, options);
+		    var parameters=$.extend(defauts, options);
 			
-			var element=$(this);
+			parameters.speed = parameters.speed/2;
+			
+			var elements=$(this);
 			 
 			last_class="";
 			
 			prefix = getPrefixBrowser();
-
-			changeContent($("#internet"));
-			
-			init(element);
+	
+			init(elements);
 			
 			// Initialisation 
-			function init(element){
+			function init(elements){
+				
+				
+				$(elements).each(function(){
+				
+							// Modify the position of the current element
+							setCssProperties($(this));
+							
+							// Initialisation of the fisrt element
+							if (  $(this).hasClass( "first" )){
+								changeContent($(this));
+							}
+							
+							if (parameters.effect=='meltedTranslation'){
+								$(this).on("click", function (){changeContent(this);});
+							}
+							else{
+								return;
+							}
+				});
+				
+				// $(elements).each(function(){
+						// if (  $(this).hasClass( "first" )){
+							// changeContent($(this));
+						// }
+				// });
+				
+				return false;	
+			}
 			
-				$(element).each(function(){
-							$(this).on("click", function (){changeContent(this);});
+			
+			function setCssProperties(elements){
+			
+				$(elements).each(function(i){
+						$("."+$(this).attr("data-className")).css({
+														'display': 'none',
+														'left':parameters.gap,
+														'opacity':0
+														});
 				});
 			
 			}
 			
-			/*function getTheClass(){
+			
+			function getTheClass(elements){
 				
 				var table_class=new Array();
-				
-				$(".zoomEffect").each(function(i){
-						table_class[i]=$(this).attr('id');
+				$(elements).each(function(i){
+						table_class[i]=$(this).attr("data-className");
 				});
-				
+							
 				return table_class;
-			}*/
+			}
 			
 			
 			function changeContent(element){
-							
-				var a_afficher=new Array();
-				a_afficher=$("."+$(element).attr('id'));
+						
 
+				$(':animated').stop(true, true);
+				var a_afficher=new Array();
+				a_afficher=$("."+$(element).attr("data-className"));
+							
+				var ordre_new=parseFloat($(element).attr("data-ordre"))+1;
 				
-				if (last_class!="" && last_class!=$(element).attr('id') )
+				
+				
+				
+				
+				
+				
+				if (last_class!="" && last_class!=$(element).attr("data-className") )
 
 				{
 
@@ -67,31 +112,29 @@
 					a_supprimer_tmp=$("."+last_class);
 
 					
-					var ordre_new=parseFloat(document.getElementById($(element).attr('id')).dataset.ordre)+1;
-					var ordre_old=parseFloat(document.getElementById(last_class).dataset.ordre)+1;
-
-
 					$(':animated').stop(true, true);
 
-					if ( ordre_new > ordre_old )
+					if ( ordre_new < ordre_old )
 
 					{
+					
+						a_afficher.css({
+								'display': 'none',
+								'left':(-1)*parameters.gap,
+								'opacity':0
+								});
 
-						$(a_supprimer_tmp).animate({opacity: 0, left:"-175px"},{
+						$(a_supprimer_tmp).animate({opacity: 0, left:parameters.gap},{
 
-											queue:    true,
+											queue:    false,
 
-											duration: 250,
+											duration: parameters.speed,
 
 											complete: function () {
 											
-												$(a_supprimer_tmp).css({ 'display': 'none' });
+												$(a_supprimer_tmp).css({ 'display': 'none','left':parameters.gap });
 
-												$(a_supprimer_tmp).css({'left':'-175px'});
-
-												$(a_afficher).css({ 'display': 'block' });
-
-												$(a_afficher).css({'position':'relative'}).animate({left:0, top:0,opacity: 1},{duration: 250});
+												$(a_afficher).css({'position':'relative', 'display': 'block'}).animate({left:0, top:0,opacity: 1},{duration: parameters.speed});
 
 											}
 
@@ -101,22 +144,23 @@
 
 					else
 					{
+						a_afficher.css({
+								'display': 'none',
+								'left':parameters.gap,
+								'opacity':0
+								});
 
-						$(a_supprimer_tmp).animate({opacity: 0, left:"175px"},{
+						$(a_supprimer_tmp).animate({opacity: 0, left:(-1)*parameters.gap},{
 
-											queue:    true,
+											queue:    false,
 
-											duration: 250,
+											duration: parameters.speed,
 
 											complete: function () {
 
-												$(a_supprimer_tmp).css({ 'display': 'none' });
+												$(a_supprimer_tmp).css({ 'display': 'none','left':(-1)*parameters.gap });
 
-												$(a_supprimer_tmp).css({'left':'175px'});							
-
-												$(a_afficher).css({ 'display': 'block' });
-
-												$(a_afficher).css({'position':'relative'}).animate({left:0, top:0,opacity: 1},{duration: 250});
+												$(a_afficher).css({'position':'relative','display': 'block'}).animate({left:0, top:0,opacity: 1},{duration: parameters.speed});
 
 											}
 
@@ -128,11 +172,11 @@
 
 				else{	
 
-					$(a_afficher).css({'position':'relative', 'display':'block'}).animate({left:0, top:0,opacity: 1},{duration: 400});
+					$(a_afficher).css({'position':'relative', 'display':'block'}).animate({left:0, top:0,opacity: 1},{duration: parameters.speed});
 
 				}
-				last_class=$(element).attr('id');
-
+				last_class=$(element).attr("data-className");
+				ordre_old=ordre_new;
 			}
 			
 			
