@@ -6,10 +6,6 @@
         Dual licensed under MIT and GPL.
 */
 
-
-
-
-
 (function($) {
 
 	  $.fn.animateContent=function(options)
@@ -17,7 +13,7 @@
            var defauts=
            {        'speed': 2000,		   //Intervalle entre chaque image, en millisecondes
 					'gap':-150,  
-					'effect': 'meltedTranslation',       //effet utiliser  ( en travaux) 
+					'effect': 'melted',       //effet utiliser  ( en travaux) 
 					'callback': null        //Fonction appelée à chaque nouvelle image
 		   };  
 		   
@@ -50,6 +46,9 @@
 							if (parameters.effect=='meltedTranslation'){
 								$(this).on("click", function (){changeContent(this);});
 							}
+							else if (parameters.effect=="melted"){
+								$(this).on("click", function (){changeContent(this);});
+							}
 							else{
 								return;
 							}
@@ -66,6 +65,13 @@
 			
 			
 			function setCssProperties(elements){
+			
+				if (parameters.effect=='meltedTranslation'){
+								
+				}
+				else if (parameters.effect=="melted"){
+								parameters.gap=0;
+				}
 			
 				$(elements).each(function(i){
 						$("."+$(this).attr("data-className")).css({
