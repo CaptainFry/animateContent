@@ -54,12 +54,6 @@
 							}
 				});
 				
-				// $(elements).each(function(){
-						// if (  $(this).hasClass( "first" )){
-							// changeContent($(this));
-						// }
-				// });
-				
 				return false;	
 			}
 			
@@ -105,11 +99,6 @@
 				var ordre_new=parseFloat($(element).attr("data-ordre"))+1;
 				
 				
-				
-				
-				
-				
-				
 				if (last_class!="" && last_class!=$(element).attr("data-className") )
 
 				{
@@ -140,7 +129,16 @@
 											
 												$(a_supprimer_tmp).css({ 'display': 'none','left':parameters.gap });
 
-												$(a_afficher).css({'position':'relative', 'display': 'block'}).animate({left:0, top:0,opacity: 1},{duration: parameters.speed});
+												$(a_afficher).css({'position':'relative', 'display': 'block'}).animate({left:0, top:0,opacity: 1},
+																														{
+																														duration: parameters.speed,
+																													/*	complete: function (){
+																															alert($(a_afficher).index());
+																															 if(parameters.callback  && $("."+$(element).attr("data-ClassName"))=="0"){
+                        																									 parameters.callback($(this));
+																															 }
+																														}*/
+																														});
 
 											}
 
@@ -166,7 +164,16 @@
 
 												$(a_supprimer_tmp).css({ 'display': 'none','left':(-1)*parameters.gap });
 
-												$(a_afficher).css({'position':'relative','display': 'block'}).animate({left:0, top:0,opacity: 1},{duration: parameters.speed});
+												$(a_afficher).css({'position':'relative','display': 'block'}).animate({left:0, top:0,opacity: 1},
+																														{
+																														duration: parameters.speed,
+																														/*complete: function (){
+																														
+																															if(parameters.callback){
+                           																									 parameters.callback($(this));
+																															}
+																														}*/
+																														});
 
 											}
 
