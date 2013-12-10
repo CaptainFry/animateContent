@@ -3,6 +3,10 @@ animateContent
 
 JQuery plug-in for animate your content on your page
 
+Demo
+==== 
+
+[Go to the demo page](http://syncoop.maisondacote.fr/demo/animateContent/)
 
 
 Quick use
@@ -41,4 +45,19 @@ effect: Effect of the animation ( "meltedTranslation", "melted" ).
 
 callback: Function call after the animation.
 
+
+
+Specifics classes
+=================
+
+first: class that designates the first element shown. 
+
+
+
+Data attributes
+===============
+
+data-ClassName: it designates the associated class.
+
+data-ordre: defines the order of appearance of the elements.
 
